@@ -17,8 +17,8 @@ export function Footer() {
               </span>
             </div>
             <p className="text-primary-foreground/70 mb-6">
-              Experience unforgettable moments at Rwanda's premier leisure destination, 
-              nestled in the heart of the Virunga mountains.
+              Experience unforgettable moments at Rwanda's premier leisure destination 
+              in the heart of Kigali.
             </p>
             <div className="flex gap-4">
               <a href="#" className="text-primary-foreground/70 hover:text-accent transition-colors">
@@ -67,7 +67,7 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                 <span className="text-primary-foreground/70">
-                  Musanze District, Northern Province, Rwanda
+                  Kigali, Rwanda
                 </span>
               </li>
               <li className="flex items-center gap-3">

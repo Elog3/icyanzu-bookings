@@ -32,7 +32,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Location",
-    details: ["Musanze District", "Northern Province, Rwanda"],
+    details: ["Kigali, Rwanda"],
   },
   {
     icon: Phone,

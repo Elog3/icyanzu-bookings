@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import VenuesPage from "./pages/VenuesPage";
 import PlayParkPage from "./pages/PlayParkPage";
 import BarPage from "./pages/BarPage";
+import MenuPage from "./pages/MenuPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/book/:venueId" element={<VenuesPage />} />
           <Route path="/play-park" element={<PlayParkPage />} />
           <Route path="/bar" element={<BarPage />} />
+          <Route path="/menu" element={<MenuPage />} />
           <Route path="/contact" element={<ContactPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

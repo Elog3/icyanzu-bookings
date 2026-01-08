@@ -43,8 +43,8 @@ const Index = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Nestled in the heart of Rwanda's majestic Virunga mountains, create unforgettable 
-              moments at our world-class event venues, kids play park, and scenic bar.
+              Located in the heart of Kigali, create unforgettable moments at our world-class 
+              event venues, kids play park, and scenic bar.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: "0.2s" }}>
