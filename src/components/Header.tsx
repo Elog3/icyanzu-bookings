@@ -9,6 +9,7 @@ const navigation = [
   { name: "Venues", href: "/venues" },
   { name: "Play Park", href: "/play-park" },
   { name: "Bar", href: "/bar" },
+  { name: "Menu", href: "/menu" },
   { name: "Contact", href: "/contact" },
 ];
 
