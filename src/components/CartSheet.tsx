@@ -12,6 +12,7 @@ import {
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/data/menuData";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export function CartSheet() {
   const {
@@ -28,6 +29,7 @@ export function CartSheet() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [customerName, setCustomerName] = useState("");
 
   const handleSubmitOrder = async () => {
     if (!tableNumber.trim()) {
@@ -40,16 +42,27 @@ export function CartSheet() {
     }
 
     setIsSubmitting(true);
-    
-    // Simulate sending order to waiter
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    console.log("Order submitted:", {
-      tableNumber,
-      items,
-      totalPrice,
-      timestamp: new Date().toISOString(),
+
+    const { error } = await supabase.from("orders").insert({
+      table_number: tableNumber,
+      customer_name: customerName || null,
+      items: items.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      total_amount: totalPrice,
     });
+
+    if (error) {
+      console.error("Order error:", error);
+      toast.error("Failed to submit order", {
+        description: "Please try again or call a waiter.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     setIsSubmitting(false);
     setIsSuccess(true);
@@ -62,6 +75,7 @@ export function CartSheet() {
     setTimeout(() => {
       clearCart();
       setTableNumber("");
+      setCustomerName("");
       setIsSuccess(false);
       setOpen(false);
     }, 3000);
@@ -157,14 +171,24 @@ export function CartSheet() {
                   <span className="text-primary">{formatPrice(totalPrice)}</span>
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Table Number</label>
-                  <Input
-                    placeholder="Enter your table number (e.g., 12)"
-                    value={tableNumber}
-                    onChange={(e) => setTableNumber(e.target.value)}
-                    className="text-center text-lg font-semibold"
-                  />
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Table Number *</label>
+                    <Input
+                      placeholder="Enter your table number (e.g., 12)"
+                      value={tableNumber}
+                      onChange={(e) => setTableNumber(e.target.value)}
+                      className="text-center text-lg font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Your Name (optional)</label>
+                    <Input
+                      placeholder="Enter your name"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                    />
+                  </div>
                 </div>
 
                 <Button

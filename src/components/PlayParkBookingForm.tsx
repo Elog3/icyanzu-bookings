@@ -31,6 +31,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const playParkSchema = z.object({
   parentName: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -94,9 +95,32 @@ export function PlayParkBookingForm() {
 
   async function onSubmit(data: PlayParkFormValues) {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Play Park booking submitted:", data);
+
+    const { error } = await supabase.from("bookings").insert({
+      booking_type: "play_park",
+      customer_name: data.parentName,
+      customer_email: data.email,
+      customer_phone: data.phone,
+      booking_date: format(data.visitDate, "yyyy-MM-dd"),
+      booking_time: data.timeSlot,
+      children_count: parseInt(data.numberOfKids),
+      special_requests: [
+        `Age range: ${data.kidsAgeRange}`,
+        `Duration: ${data.duration}`,
+        data.preOrderSnacks ? `Snack order: ${data.snackNotes}` : null,
+      ].filter(Boolean).join("\n"),
+    });
+
     setIsSubmitting(false);
+
+    if (error) {
+      console.error("Booking error:", error);
+      toast.error("Failed to submit booking", {
+        description: "Please try again later.",
+      });
+      return;
+    }
+
     setIsSuccess(true);
     toast.success("Play Park booking submitted!", {
       description: "We'll send you a confirmation email shortly.",

@@ -53,8 +53,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/menu" className="text-primary-foreground/70 hover:text-accent transition-colors">
+                  Order Now
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="text-primary-foreground/70 hover:text-accent transition-colors">
                   Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/login" className="text-primary-foreground/70 hover:text-accent transition-colors">
+                  Admin
                 </Link>
               </li>
             </ul>
