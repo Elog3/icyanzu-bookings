@@ -31,6 +31,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const barBookingSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -84,9 +85,32 @@ export function BarBookingForm() {
 
   async function onSubmit(data: BarBookingFormValues) {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Bar booking submitted:", data);
+
+    const { error } = await supabase.from("bookings").insert({
+      booking_type: "bar",
+      customer_name: data.fullName,
+      customer_email: data.email,
+      customer_phone: data.phone,
+      booking_date: format(data.visitDate, "yyyy-MM-dd"),
+      booking_time: data.time,
+      party_size: parseInt(data.numberOfPeople),
+      seating_preference: data.tablePreference,
+      special_requests: [
+        data.specialRequests,
+        data.preOrderDrinks ? `Pre-order drinks: ${data.drinkNotes}` : null,
+      ].filter(Boolean).join("\n"),
+    });
+
     setIsSubmitting(false);
+
+    if (error) {
+      console.error("Booking error:", error);
+      toast.error("Failed to submit reservation", {
+        description: "Please try again later.",
+      });
+      return;
+    }
+
     setIsSuccess(true);
     toast.success("Table reservation submitted!", {
       description: "We'll confirm your booking shortly.",
